@@ -6,9 +6,13 @@ export interface TodoListAttributes {
     name: string;
 }
 
-export interface TodoListCreationAttributes extends Optional<TodoListAttributes, "todoListId"> { };
+export interface TodoListCreationAttributes extends Optional<TodoListAttributes, 'todoListId'> { }
 
 export class TodoList extends Model<TodoListAttributes, TodoListCreationAttributes> implements TodoListAttributes {
+
+    public static associations: {
+        todoItems: Association<TodoList, TodoItem>;
+    };
     todoListId!: number;
     name!: string;
 
@@ -16,10 +20,6 @@ export class TodoList extends Model<TodoListAttributes, TodoListCreationAttribut
     public addItem!: HasManyAddAssociationMixin<TodoItem, number>;
 
     public readonly todoItems?: TodoItem[];
-
-    public static associations: {
-        todoItems: Association<TodoList, TodoItem>;
-    }
 
     public static initialize(sequelize: Sequelize) {
         TodoList.init(
@@ -34,12 +34,12 @@ export class TodoList extends Model<TodoListAttributes, TodoListCreationAttribut
                     allowNull: false
                 }
             },
-            { tableName: "todolists", sequelize }
+            { tableName: 'todolists', sequelize }
         );
         TodoList.hasMany(TodoItem, {
-            sourceKey: "todoListId",
-            foreignKey: "todoListId",
-            as: "todoItems"
+            sourceKey: 'todoListId',
+            foreignKey: 'todoListId',
+            as: 'todoItems'
         });
     }
 }

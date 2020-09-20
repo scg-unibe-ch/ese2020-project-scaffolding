@@ -1,37 +1,35 @@
-
-import { Request, Response } from 'express';
 import { UserAttributes, User } from '../models/user.model';
+import { LoginResponse, LoginRequest } from '../models/login.model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 export class UserService {
 
-    public register(req: Request, res: Response) {
-        const user: UserAttributes = req.body;
+    public register(user: UserAttributes): Promise<UserAttributes> {
         const saltRounds = 12;
         user.password = bcrypt.hashSync(user.password, saltRounds); // hashes the password, never store passwords as plaintext
-        User.create(user).then(inserted => res.send(inserted)).catch(err => res.status(500).send(err));
+        return User.create(user).then(inserted => Promise.resolve(inserted)).catch(err => Promise.reject(err));
     }
 
-    public login(req: Request, res: Response) {
-
+    public login(loginRequestee: LoginRequest): Promise<User | LoginResponse> {
         const secret = process.env.JWT_SECRET;
-        const loginRequestee: UserAttributes = req.body;
-        User.findOne({
+        return User.findOne({
             where: {
                 userName: loginRequestee.userName
             }
-        }).then(user => {
+        })
+        .then(user => {
             if (bcrypt.compareSync(loginRequestee.password, user.password)) {// compares the hash with the password from the lognin request
-                const token = jwt.sign({ userName: user.userName, userId: user.userId }, secret, { expiresIn: '2h' });
-                res.send({ user, token });
+                const token: string = jwt.sign({ userName: user.userName, userId: user.userId }, secret, { expiresIn: '2h' });
+                return Promise.resolve({ user, token });
             } else {
-                res.status(403).send();
+                return Promise.reject({ message: 'not authorized' });
             }
         })
-        .catch(err => {
-            res.status(500).send(err);
-        });
+        .catch(err => Promise.reject({ message: err }));
     }
 
+    public getAll(): Promise<User[]> {
+        return User.findAll();
+    }
 }

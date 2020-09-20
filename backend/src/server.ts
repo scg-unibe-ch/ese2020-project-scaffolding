@@ -1,14 +1,13 @@
-import express from "express";
-import morgan from "morgan";
-import { Application ,Request, Response } from "express";
+import express, { Application , Request, Response } from 'express';
+import morgan from 'morgan';
 import { TodoItemController } from './controllers/todoitem.controller';
 import { TodoListController } from './controllers/todolist.controller';
-import { UserController } from "./controllers/user.controller";
-import { SecuredController } from "./controllers/secured.controller";
+import { UserController } from './controllers/user.controller';
+import { SecuredController } from './controllers/secured.controller';
 import { Sequelize } from 'sequelize';
-import { TodoList } from "./models/todolist.model";
-import { TodoItem } from "./models/todoitem.model";
-import { User } from "./models/user.model";
+import { TodoList } from './models/todolist.model';
+import { TodoItem } from './models/todoitem.model';
+import { User } from './models/user.model';
 
 export class Server {
     private server: Application;
@@ -41,7 +40,7 @@ export class Server {
             .use('/secured', SecuredController)
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running
-            .get('/', (req, res) => res.send("<h1>Welcome to the ESE-2020 Backend Scaffolding <span style=\"font-size:50px\">&#127881;</span></h1>"));
+            .get('/', (req, res) => res.send('<h1>Welcome to the ESE-2020 Backend Scaffolding <span style="font-size:50px">&#127881;</span></h1>'));
     }
 
     private configureSequelize(): Sequelize {

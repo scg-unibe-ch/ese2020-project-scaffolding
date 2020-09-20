@@ -7,8 +7,8 @@ export interface TodoItemAttributes {
     todoListId: number;
 }
 
-
-export interface TodoItemCreationAttributes extends Optional<TodoItem, "todoItemId"> { } // tells sequelize that todoItemId is not a required field
+// tells sequelize that todoItemId is not a required field
+export interface TodoItemCreationAttributes extends Optional<TodoItem, 'todoItemId'> { }
 
 
 export class TodoItem extends Model<TodoItemAttributes, TodoItemCreationAttributes> implements TodoItemAttributes {

@@ -1,4 +1,4 @@
-import { TodoItem, TodoItemAttributes, TodoItemCreationAttributes } from "./todoitem.model";
+import { TodoItem, TodoItemAttributes, TodoItemCreationAttributes } from './todoitem.model';
 import { Optional, Model, Sequelize, DataTypes } from 'sequelize';
 
 export interface UserAttributes {
@@ -7,7 +7,7 @@ export interface UserAttributes {
     password: string;
 }
 
-export interface UserCreationAttributes extends Optional<UserAttributes, "userId"> { }
+export interface UserCreationAttributes extends Optional<UserAttributes, 'userId'> { }
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
     userId!: number;
