@@ -1,4 +1,5 @@
 import { Optional, Model, Sequelize, DataTypes } from 'sequelize';
+import { TodoList } from './todolist.model';
 
 export interface TodoItemAttributes {
     todoItemId: number;
@@ -38,7 +39,17 @@ export class TodoItem extends Model<TodoItemAttributes, TodoItemCreationAttribut
                 allowNull: false
             }
         },
-            { sequelize, tableName: 'todoItems' }
+        { sequelize, tableName: 'todoItems' }
         );
+
     }
+    public static createAssociations() {
+        TodoItem.belongsTo(TodoList, {
+            targetKey: 'todoListId',
+            as: 'todoList',
+            onDelete: 'cascade',
+            foreignKey: 'todoListId'
+        });
+    }
+
 }

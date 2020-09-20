@@ -20,6 +20,8 @@ export class Server {
 
         TodoItem.initialize(this.sequelize); // creates the tables if they dont exist
         TodoList.initialize(this.sequelize);
+        TodoItem.createAssociations();
+        TodoList.createAssociations();
         User.initialize(this.sequelize);
 
         this.sequelize.sync().then(() => {                           // create connection to the database

@@ -7,7 +7,7 @@ const todoitemController: Router = express.Router();
 todoitemController.post('/', (req: Request, res: Response) => {
     TodoItem.create(req.body)
         .then(inserted => res.send(inserted))
-        .catch(err => res.status(500).send(err));
+        .catch(err => {console.log(err); res.status(500).send(err); }); // TODO
 });
 
 todoitemController.delete('/:id', (req: Request, res: Response) => {

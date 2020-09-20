@@ -36,10 +36,11 @@ export class TodoList extends Model<TodoListAttributes, TodoListCreationAttribut
             },
             { tableName: 'todolists', sequelize }
         );
+    }
+    public static createAssociations() {
         TodoList.hasMany(TodoItem, {
-            sourceKey: 'todoListId',
-            foreignKey: 'todoListId',
-            as: 'todoItems'
+            as: 'todoItems',
+            foreignKey: 'todoListId'
         });
     }
 }
