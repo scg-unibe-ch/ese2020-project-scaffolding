@@ -29,7 +29,8 @@ Here are more resources you can read:
 - [alternative example repo](https://github.com/maximegris/typescript-express-sequelize)
 - [alternative example repo](https://developer.okta.com/blog/2018/11/15/node-express-typescript)
 
-## Jump straight to an example for
+## Quick Links
+These are links to some of the files that we have implemented/modified when developing the backend:
 
 - Middleware
 	- [the function](./src/middlewares/checkAuth.ts)
@@ -81,11 +82,70 @@ Some endpoints can be called in a [browser](http://localhost:3000), others have 
 	```
 </details>
 
+- PUT `/:id`
+
+	<details>
+		<summary>Request</summary>
+
+	```json
+		{
+			"name": "string",
+			"done": "boolean",
+			"todoListId":"number"
+		}
+	```
+
+	</details>
+
+
+	<details>
+		<summary>Response</summary>
+
+		Code: 200
+		Body:
+
+	```json
+	{
+		"todoItemId": "number",
+		"name": "string",
+		"done": "boolean",
+		"todoListId":"number"
+	}
+	```
+</details>
+
 - DELETE `/:id`<br/>
 	Response: Status: 200
 
 ### `/todolist`
 - POST
+	<details>
+		<summary>Request</summary>
+
+		Code: 200
+		Body:
+	```json
+	{
+		"name":"string"
+	}
+
+	```
+	</details>
+	<details>
+		<summary>Response</summary>
+
+		Code: 200
+		Body:
+	```json
+	{
+		"todoListId": "number",
+		"name":"string"
+	}
+
+	```
+	</details>
+
+- PUT `/:id`
 	<details>
 		<summary>Request</summary>
 

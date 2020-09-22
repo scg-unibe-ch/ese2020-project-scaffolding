@@ -9,6 +9,8 @@ import { TodoList } from './models/todolist.model';
 import { TodoItem } from './models/todoitem.model';
 import { User } from './models/user.model';
 
+import cors from 'cors';
+
 export class Server {
     private server: Application;
     private sequelize: Sequelize;
@@ -32,14 +34,30 @@ export class Server {
     }
 
     private configureServer(): Application {
+        // options for cors middleware
+        const options: cors.CorsOptions = {
+            allowedHeaders: [
+                'Origin',
+                'X-Requested-With',
+                'Content-Type',
+                'Accept',
+                'X-Access-Token',
+            ],
+            credentials: true,
+            methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+            origin: `http://localhost:${this.port}`,
+            preflightContinue: false,
+        };
+
         return express()
+            .use(cors())
             .use(express.json())                    // parses an incoming json to an object
             .use(morgan('tiny'))                    // logs incoming requests
-            .use(this.corsConfig)
             .use('/todoitem', TodoItemController)   // any request on this path is forwarded to the TodoItemController
             .use('/todolist', TodoListController)
             .use('/user', UserController)
             .use('/secured', SecuredController)
+            .options('*', cors(options))
             .use(express.static('./src/public'))
             // this is the message you get if you open http://localhost:3000/ when the server is running
             .get('/', (req, res) => res.send('<h1>Welcome to the ESE-2020 Backend Scaffolding <span style="font-size:50px">&#127881;</span></h1>'));
@@ -51,13 +69,6 @@ export class Server {
             storage: 'db.sqlite',
             logging: false // can be set to true for debugging
         });
-    }
-
-    private corsConfig(req: Request, res: Response, next: any) { // enables the browser running the frontend to do requests to the backend
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', '*');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        next();
     }
 }
 
